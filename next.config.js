@@ -1,10 +1,17 @@
+const path = require('path')
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  output: 'standalone', // Enable standalone output for Docker
+  output: 'standalone',
   transpilePackages: ["@gaqno-dev/ui", "@gaqno-dev/core"],
-  assetPrefix: "/erp",
+  webpack: (config) => {
+    config.resolve.alias = {
+      ...config.resolve.alias,
+      '@': path.resolve(__dirname, './src'),
+    }
+    return config
+  },
 }
 
 module.exports = nextConfig
-
