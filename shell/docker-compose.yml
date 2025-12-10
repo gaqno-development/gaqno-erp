@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  shell:
+    build:
+      context: ../..  # Monorepo root
+      dockerfile: apps/shell/Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+      - NEXT_PUBLIC_SUPABASE_URL=${NEXT_PUBLIC_SUPABASE_URL}
+      - NEXT_PUBLIC_SUPABASE_ANON_KEY=${NEXT_PUBLIC_SUPABASE_ANON_KEY}
+      # Micro-Frontend Service URLs (for Coolify internal network)
+      - AUTH_SERVICE_URL=${AUTH_SERVICE_URL:-http://localhost:3001}
+      - ADMIN_SERVICE_URL=${ADMIN_SERVICE_URL:-http://localhost:3002}
+      - AI_SERVICE_URL=${AI_SERVICE_URL:-http://localhost:3003}
+      - CRM_SERVICE_URL=${CRM_SERVICE_URL:-http://localhost:3004}
+      - ERP_SERVICE_URL=${ERP_SERVICE_URL:-http://localhost:3005}
+      - FINANCE_SERVICE_URL=${FINANCE_SERVICE_URL:-http://localhost:3006}
+      - PLATFORM_SERVICE_URL=${PLATFORM_SERVICE_URL:-http://localhost:3007}
+      - PDV_SERVICE_URL=${PDV_SERVICE_URL:-http://localhost:3008}
+    env_file:
+      - ../../.env.local  # Path relative to monorepo root
+    restart: unless-stopped
+    networks:
+      - gaqno-network
+
+networks:
+  gaqno-network:
+    driver: bridge
+
