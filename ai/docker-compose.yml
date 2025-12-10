@@ -13,7 +13,7 @@ services:
       - NEXT_PUBLIC_SUPABASE_URL=${NEXT_PUBLIC_SUPABASE_URL}
       - NEXT_PUBLIC_SUPABASE_ANON_KEY=${NEXT_PUBLIC_SUPABASE_ANON_KEY}
     env_file:
-      - ../../.env.local  # Shared env file from monorepo root
+      - .env.local  # Local env file (or set in Coolify)
     restart: unless-stopped
     networks:
       - gaqno-network

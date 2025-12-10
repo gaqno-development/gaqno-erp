@@ -3,8 +3,8 @@ version: '3.8'
 services:
   shell:
     build:
-      context: ../..  # Monorepo root
-      dockerfile: apps/shell/Dockerfile
+      context: .  # Repository root (standalone)
+      dockerfile: Dockerfile
     ports:
       - "3000:3000"
     environment:
@@ -22,7 +22,7 @@ services:
       - PLATFORM_SERVICE_URL=${PLATFORM_SERVICE_URL:-http://localhost:3007}
       - PDV_SERVICE_URL=${PDV_SERVICE_URL:-http://localhost:3008}
     env_file:
-      - ../../.env.local  # Path relative to monorepo root
+      - .env.local  # Local env file (or set in Coolify)
     restart: unless-stopped
     networks:
       - gaqno-network
