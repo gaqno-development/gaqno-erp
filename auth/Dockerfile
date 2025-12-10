@@ -1,5 +1,8 @@
 FROM node:20-alpine AS base
 
+# Install git for git dependencies
+RUN apk add --no-cache git
+
 # Install dependencies only when needed
 FROM base AS deps
 WORKDIR /app

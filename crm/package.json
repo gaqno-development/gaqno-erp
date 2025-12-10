@@ -9,15 +9,15 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@repo/config": "git+https://github.com/gaqno-development/gaqno-config.git",
-    "@repo/core": "git+https://github.com/gaqno-development/gaqno-core.git",
-    "@repo/ui": "git+https://github.com/gaqno-development/gaqno-ui.git",
+    "@gaqno-dev/config": "^1.0.0",
+    "@gaqno-dev/core": "^1.0.0",
+    "@gaqno-dev/ui": "^1.0.0",
     "next": "14.2.0",
     "react": "^18",
     "react-dom": "^18"
   },
   "devDependencies": {
-    "@repo/config": "git+https://github.com/gaqno-development/gaqno-config.git",
+    "@gaqno-dev/config": "^1.0.0",
     "@types/react": "^19.2.7",
     "@types/react-dom": "^19.2.3",
     "eslint-config-next": "^16.0.8"
