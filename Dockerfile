@@ -1,35 +1,32 @@
 FROM node:20-alpine AS base
-
-# Install git for git dependencies
 RUN apk add --no-cache git
-
-FROM base AS deps
-WORKDIR /app
-COPY package.json ./
-RUN npm install --legacy-peer-deps
 
 FROM base AS builder
 WORKDIR /app
-COPY --from=deps /app/node_modules ./node_modules
-COPY . .
+
+WORKDIR /app/gaqno-erp
+COPY gaqno-erp/package.json ./
+COPY gaqno-erp/package-lock.json ./
+RUN npm config set fetch-timeout 600000 && \
+    npm config set fetch-retries 5 && \
+    npm install --legacy-peer-deps
+
+COPY gaqno-erp/ .
 RUN npm run build
 
 FROM base AS runner
 WORKDIR /app
 ENV NODE_ENV=production
+
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
 
-# Create public directory (Next.js standalone doesn't require it, but some apps might)
-# The public folder is optional - static assets go to .next/static in standalone builds
+COPY --from=builder --chown=nextjs:nodejs /app/gaqno-erp/.next/standalone ./
+COPY --from=builder --chown=nextjs:nodejs /app/gaqno-erp/.next/static ./.next/static
 RUN mkdir -p ./public
 
-# Copy standalone build
-COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
-COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 USER nextjs
 EXPOSE 3005
 ENV PORT=3005
 ENV HOSTNAME="0.0.0.0"
 CMD ["node", "server.js"]
-

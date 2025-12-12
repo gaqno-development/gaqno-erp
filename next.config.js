@@ -4,7 +4,7 @@ const path = require('path')
 const nextConfig = {
   reactStrictMode: true,
   output: 'standalone',
-  transpilePackages: ["@gaqno-dev/ui", "@gaqno-dev/core"],
+  transpilePackages: ["@gaqno-dev/ui", "@gaqno-dev/frontcore"],
   webpack: (config) => {
     config.resolve.alias = {
       ...config.resolve.alias,

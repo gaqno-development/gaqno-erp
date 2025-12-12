@@ -1,5 +1,5 @@
 import type { Config } from "tailwindcss";
-import sharedConfig from "@gaqno-dev/config/tailwind";
+import sharedConfig from "@gaqno-dev/frontcore/config/tailwind";
 
 const config: Config = {
   content: [
