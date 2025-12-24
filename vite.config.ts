@@ -38,7 +38,11 @@ export default defineConfig({
 					singleton: true,
 					requiredVersion: '^5.0.0',
 				},
-			},
+				zustand: {
+					singleton: true,
+					requiredVersion: '^4.0.0',
+				},
+			} as any,
 		}),
 	],
 	build: {
