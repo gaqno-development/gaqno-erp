@@ -11,7 +11,7 @@ RUN --mount=type=cache,target=/root/.npm \
     npm install --legacy-peer-deps
 
 COPY . .
-# PATCH: Fix unused @ts-expect-error in @gaqno-dev/frontcore
+# PATCH: Fix unused @ts-expect-error in @gaqno-development/frontcore
 RUN find node_modules -name useDialogForm.ts -exec sed -i '/@ts-expect-error/d' {} +
 RUN npm run build
 
