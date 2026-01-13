@@ -5,6 +5,7 @@ FROM base AS builder
 WORKDIR /app
 
 COPY package.json ./
+COPY .npmrc* ./
 RUN --mount=type=cache,target=/root/.npm \
     npm config set fetch-timeout 1200000 && \
     npm config set fetch-retries 10 && \
