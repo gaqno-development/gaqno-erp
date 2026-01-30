@@ -6,6 +6,10 @@ WORKDIR /app
 
 COPY package.json ./
 COPY .npmrc* ./
+ARG NPM_TOKEN
+RUN if [ -n "$NPM_TOKEN" ]; then \
+  printf '%s\n' "@gaqno-development:registry=https://npm.pkg.github.com" "//npm.pkg.github.com/:_authToken=$NPM_TOKEN" > .npmrc; \
+fi
 RUN --mount=type=cache,target=/root/.npm \
     npm config set fetch-timeout 1200000 && \
     npm config set fetch-retries 10 && \
