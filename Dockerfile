@@ -28,7 +28,7 @@ WORKDIR /app
 COPY --from=builder /app/dist /usr/share/nginx/html
 COPY --from=builder /app/public /usr/share/nginx/html/public
 
-RUN echo 'server { listen 3004; server_name _; root /usr/share/nginx/html; index index.html; \
+RUN echo 'server { listen 3004; server_name _; root /usr/share/nginx/html; index index.html; absolute_redirect off; \
     location /erp/assets/ { alias /usr/share/nginx/html/assets/; add_header Cache-Control "public, immutable"; add_header Access-Control-Allow-Origin "*"; } \
     location /assets/ { alias /usr/share/nginx/html/assets/; add_header Cache-Control "public, immutable"; add_header Access-Control-Allow-Origin "*"; } \
     location / { return 302 /; } }' > /etc/nginx/conf.d/default.conf
