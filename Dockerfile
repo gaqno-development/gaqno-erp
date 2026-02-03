@@ -7,13 +7,14 @@ WORKDIR /app
 COPY package.json ./
 COPY .npmrc* ./
 ARG NPM_TOKEN
-RUN if [ -n "$NPM_TOKEN" ]; then \
-    printf '%s\n' "@gaqno-development:registry=https://npm.pkg.github.com" "//npm.pkg.github.com/:_authToken=$NPM_TOKEN" > .npmrc; \
-    fi
+RUN if [ -z "$NPM_TOKEN" ] || [ "$NPM_TOKEN" = "REPLACE_WITH_GITHUB_PAT_IN_COOLIFY_UI" ]; then \
+    echo "ERROR: NPM_TOKEN must be set in Coolify Build Arguments (GitHub PAT with read:packages)."; exit 1; \
+    fi && \
+    printf '%s\n' "@gaqno-development:registry=https://npm.pkg.github.com" "//npm.pkg.github.com/:_authToken=$NPM_TOKEN" > .npmrc
 RUN --mount=type=cache,target=/root/.npm \
     npm config set fetch-timeout 1200000 && \
     npm config set fetch-retries 10 && \
-    npm install --legacy-peer-deps
+    npm install --legacy-peer-deps --include=dev
 
 COPY . .
 RUN mkdir -p public
@@ -24,7 +25,6 @@ RUN npm run build
 FROM nginx:alpine AS runner
 WORKDIR /app
 
-# Copy built files
 COPY --from=builder /app/dist /usr/share/nginx/html
 COPY --from=builder /app/public /usr/share/nginx/html/public
 
